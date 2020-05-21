@@ -2,9 +2,21 @@
     "name": "node-server",
     "version": "1.0.0",
     "description": "Node server for openZwave",
-    "main": "app.js",
+    "main": "server/server.js",
+    "nodemonConfig": {
+        "exec": "npm run dev",
+        "watch": ["server/*", "public/*"],
+        "ignore": ["**/__tests__/**", "*.test.js", "*.spec.js"]
+    },
     "scripts": {
-        "start": "node app.js"
+        "start": "npm run prod",
+        "build": "npm run clean && npm run transpile",
+        "server": "node ./dist-server/server.js",
+        "dev": "NODE_ENV=development npm run build && npm run server",
+        "prod": "NODE_ENV=production npm run build && npm run server",
+        "transpile": "babel ./server --out-dir dist-server",
+        "clean": "rimraf dist-server",
+        "watch:dev": "nodemon"
     },
     "keywords": [
         "zwave",
@@ -16,6 +28,15 @@
     "author": "Chris <christopherdubois3@gmail.com@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "openzwave-shared": "^1.7.0"
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.9.6",
+        "@babel/preset-env": "^7.9.6",
+        "babel": "^6.23.0",
+        "nodemon": "^2.0.4",
+        "openzwave-shared": "^1.7.0",
+        "rimraf": "^3.0.2"
+    },
+    "babel": {
+        "presets": ["@babel/preset-env"]
     }
 }

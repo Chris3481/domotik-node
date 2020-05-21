@@ -14,7 +14,7 @@ services:
       - "8081"
     networks:
       - raspbery-node
-    command: "node app.js"
+    command: "npm start"
 
 networks:
   raspbery-node:
