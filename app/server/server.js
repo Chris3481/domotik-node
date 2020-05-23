@@ -1,9 +1,13 @@
+'use strict';
 
+import Zwave                from './boot/zwave';
+import config               from "./config/zwaveConfig";
+import ZwaveEventSubscriber from "./subscribers/ZwaveEventSubscriber";
 
-console.log('server running');
+// boot Zwave
+ZwaveEventSubscriber.initDriverEvents();
+ZwaveEventSubscriber.initNodeEvents();
+ZwaveEventSubscriber.initValueEvents();
 
-let zwaveBoot = require('./boot/zwave.js');
-
-// boot zwave
-zwaveBoot.boot();
-
+console.log('connecting to %s', config.driverPath);
+Zwave.connect(config.driverPath);

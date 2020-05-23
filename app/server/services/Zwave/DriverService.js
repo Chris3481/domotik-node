@@ -3,13 +3,6 @@
 class DriverService {
 
     /**
-     * @param Zwave
-     */
-    constructor(Zwave) {
-        this.zwave = Zwave;
-    }
-
-    /**
      * Connected to openZwave controller
      *
      * @param version
@@ -110,4 +103,4 @@ class DriverService {
     }
 }
 
-module.exports = DriverService;
+module.exports = new DriverService();

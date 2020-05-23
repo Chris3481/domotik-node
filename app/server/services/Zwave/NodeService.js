@@ -1,16 +1,10 @@
 'use strict';
 
+import Zwave from '../../boot/zwave';
+
 let nodes = [];
 
 class DriverService {
-
-    /**
-     *
-     * @param Zwave
-     */
-    constructor(Zwave) {
-        this.zwave = Zwave;
-    }
 
     /**
      * New node detected but not ready
@@ -64,7 +58,7 @@ class DriverService {
                 case 0x26: // COMMAND_CLASS_SWITCH_MULTILEVEL
 
                     console.log('Polling: node id [%d] comClass [%d]', nodeId, comClass);
-                    this.zwave.enablePoll(nodeId, comClass);
+                    Zwave.enablePoll(nodeId, comClass);
                     break;
             }
 
@@ -134,4 +128,4 @@ class DriverService {
     }
 }
 
-module.exports = DriverService;
+module.exports = new DriverService();

@@ -1,33 +1,19 @@
+'use strict';
 
-import ZWave from 'openzwave-shared';
-
-import ZwaveEventSubscriber from '../subscribers/zwave/EventSubscriber';
-
+import ZWave  from 'openzwave-shared';
 import config from '../config/zwaveConfig';
 
-/**
- * start Zwave module
- */
-export function boot() {
 
-    let zwave = new ZWave({
-        ConsoleOutput: config.consoleOutput,
-    });
+let zwave = new ZWave({
+    ConsoleOutput: config.consoleOutput,
+});
 
-    let eventSubscriber = new ZwaveEventSubscriber(zwave);
 
-    eventSubscriber.initDriverEvents();
-    eventSubscriber.initNodeEvents();
-    eventSubscriber.initValueEvents();
+process.on('SIGINT', function () {
+    console.log('disconnecting...');
+    zwave.disconnect(config.driverPath);
+    // process.exit();
+});
 
-    console.log("connecting to " + config.driverPath);
-    zwave.connect(config.driverPath);
 
-    process.on('SIGINT', function () {
-        console.log('disconnecting...');
-        zwave.disconnect(config.driverPath);
-        // process.exit();
-    });
-
-}
-
+module.exports = zwave;
