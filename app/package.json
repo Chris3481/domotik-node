@@ -5,8 +5,15 @@
     "main": "server/server.js",
     "nodemonConfig": {
         "exec": "npm run dev",
-        "watch": ["server/*", "public/*"],
-        "ignore": ["**/__tests__/**", "*.test.js", "*.spec.js"]
+        "watch": [
+            "server/*",
+            "public/*"
+        ],
+        "ignore": [
+            "**/__tests__/**",
+            "*.test.js",
+            "*.spec.js"
+        ]
     },
     "scripts": {
         "start": "npm run prod",
@@ -32,11 +39,17 @@
         "@babel/core": "^7.9.6",
         "@babel/preset-env": "^7.9.6",
         "babel": "^6.23.0",
+        "body-parser": "^1.19.0",
+        "compression": "^1.7.4",
+        "express": "^4.17.1",
+        "helmet": "^3.23.3",
         "nodemon": "^2.0.4",
         "openzwave-shared": "^1.7.0",
         "rimraf": "^3.0.2"
     },
     "babel": {
-        "presets": ["@babel/preset-env"]
+        "presets": [
+            "@babel/preset-env"
+        ]
     }
 }
