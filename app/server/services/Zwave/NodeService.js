@@ -7,6 +7,15 @@ let nodes = [];
 class DriverService {
 
     /**
+     * Return the network nodes
+     *
+     * @returns {[]}
+     */
+    getList() {
+        return nodes;
+    }
+
+    /**
      * New node detected but not ready
      *
      * @param nodeId
