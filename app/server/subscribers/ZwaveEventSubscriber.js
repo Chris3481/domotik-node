@@ -14,27 +14,23 @@ class ZwaveEventSubscriber {
 
        Zwave.on('connected', version => {
            driverEventService.connected(version);
-        });
+       });
 
        Zwave.on('driver ready', homeId => {
            driverEventService.driverReady(homeId);
-        });
+       });
 
        Zwave.on('driver failed', () => {
            driverEventService.driverFailed();
-        });
-
-       Zwave.on('notification', (nodeId, notification) => {
-           driverEventService.nodeNotification(nodeId, notification)
-        });
+       });
 
        Zwave.on('scan complete', () => {
            driverEventService.scanComplete();
-        });
+       });
 
        Zwave.on('controller command', (n, rv, st, message) => {
            driverEventService.controllerCommand(n, rv, st, message)
-        });
+       });
     }
 
     /**
@@ -44,24 +40,26 @@ class ZwaveEventSubscriber {
 
        Zwave.on('node added', nodeId => {
            nodeEventService.nodeAdded(nodeId);
-        });
+       });
 
        Zwave.on('node ready', (nodeId, nodeInfo) => {
            nodeEventService.nodeReady(nodeId, nodeInfo);
-        });
+       });
 
        Zwave.on('node event', (nodeId, data) => {
            nodeEventService.nodeEvent(nodeId, data);
+       });
+
+        Zwave.on('notification', (nodeId, notification) => {
+            nodeEventService.nodeNotification(nodeId, notification)
         });
     }
 
     /**
-     * @todo maybe this listener should be initialized before node events
-     *
      * Value event
      */
-    initValueEvents()
-    {
+    initValueEvents() {
+
        Zwave.on('value added', (nodeId, comClass, value) => {
            nodeEventService.valueChanged(nodeId, comClass, value);
         });
@@ -70,8 +68,8 @@ class ZwaveEventSubscriber {
            nodeEventService.valueChanged(nodeId, comClass, value);
         });
 
-       Zwave.on('value removed', (nodeId, comClass, index) => {
-           nodeEventService.valueRemoved(nodeId, comClass, index);
+       Zwave.on('value removed', (nodeId, comClass,instance,  index) => {
+           nodeEventService.valueRemoved(nodeId, comClass, instance, index);
         });
     }
 }

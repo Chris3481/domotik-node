@@ -1,13 +1,16 @@
 'use strict';
 
-import Zwave from '../../boot/zwave';
+import Node  from '../../Models/Node';
 
-let nodes = [];
 
 /**
  * This class is handles the zwave node events
  */
 class NodeEventService {
+
+    constructor() {
+        this.nodes = [];
+    }
 
     /**
      * Return the network nodes
@@ -15,7 +18,7 @@ class NodeEventService {
      * @returns {[]}
      */
     getList() {
-        return nodes;
+        return this.nodes.filter(node => node.data.ready === true);
     }
 
     /**
@@ -25,62 +28,57 @@ class NodeEventService {
      */
     nodeAdded(nodeId) {
 
-        nodes[nodeId] = {
-            manufacturer:   '',
-            manufacturerId: '',
-            product:        '',
-            productType:    '',
-            productId:      '',
-            type:           '',
-            name:           '',
-            loc:            '',
-            classes:        {},
-            ready:          false,
-        };
+        console.log('<============== New node detected %s ==============>', nodeId)
+
+        const node = new Node();
+
+        this.setNode(nodeId, node);
     }
 
     /**
      * The node is ready
-     *
-     * @todo Is it the last event triggered when node is initialized ?
      *
      * @param nodeId
      * @param nodeInfo
      */
     nodeReady(nodeId, nodeInfo) {
 
-        console.log('node is ready');
+        console.log('<============== New node ready %s ==============>', nodeId);
         console.log(nodeInfo);
 
-        Object.assign(nodes[nodeId], {
-            manufacturer:   nodeInfo.manufacturer,
-            manufacturerId: nodeInfo.manufacturerid,
-            product:        nodeInfo.product,
-            productType:    nodeInfo.producttype,
-            productId:      nodeInfo.productid,
-            type:           nodeInfo.type,
-            name:           nodeInfo.name,
-            loc:            nodeInfo.loc,
-            ready:          true,
-        });
+        const node = this.getNodeById(nodeId);
 
-        for (let comClass in nodes[nodeId].classes) {
-            switch (comClass) {
-                case 0x25: // COMMAND_CLASS_SWITCH_BINARY
-                case 0x26: // COMMAND_CLASS_SWITCH_MULTILEVEL
-
-                    console.log('Polling: node id [%d] comClass [%d]', nodeId, comClass);
-                    Zwave.enablePoll(nodeId, comClass);
-                    break;
-            }
-
-
-            let values = nodes[nodeId].classes[comClass];
-
-            for (let idx in values) {
-                console.log('nodeId [%d]  %s = %s', nodeId, values[idx]['label'], values[idx]['value']);
-            }
+        if (!node) {
+            return;
         }
+
+        const updatedNode = node.setNodeInfo(nodeInfo);
+
+        // Update node reference in this class
+        this.setNode(nodeId, updatedNode);
+
+
+        // todo do some thing smart for polling
+
+        // const comClasses = node.getAllClasses();
+        //
+        // for (let comClass in comClasses) {
+        //     switch (comClass) {
+        //         case 0x25: // COMMAND_CLASS_SWITCH_BINARY
+        //         case 0x26: // COMMAND_CLASS_SWITCH_MULTILEVEL
+        //
+        //             console.log('Polling: node id [%d] comClass [%d]', nodeId, comClass);
+        //             Zwave.enablePoll(nodeId, comClass);
+        //             break;
+        //     }
+        //
+        //
+        //     let values = nodes[nodeId].classes[comClass];
+        //
+        //     for (let idx in values) {
+        //         console.log('nodeId [%d]  %s = %s', nodeId, values[idx]['label'], values[idx]['value']);
+        //     }
+        //}
     }
 
     /**
@@ -90,38 +88,69 @@ class NodeEventService {
      * @param data
      */
     nodeEvent(nodeId, data) {
-        console.log('node%d event: Basic set %d', nodeId, data);
+        console.log('================> node%d event: Basic set %d', nodeId, data);
 
         //@todo log this to the database / notice frontend
+    }
+
+    /**
+     * Devices notifications
+     *
+     * @param nodeId
+     * @param notification
+     */
+    nodeNotification(nodeId, notification) {
+
+        switch (notification) {
+            case 0:
+                console.log('node%d: message complete', nodeId);
+                break;
+            case 1:
+                console.log('node%d: timeout', nodeId);
+                break;
+            case 2:
+                console.log('node%d: nop', nodeId);
+                break;
+            case 3:
+                console.log('node%d: node awake', nodeId);
+                break;
+            case 4:
+                console.log('node%d: node sleep', nodeId);
+                break;
+            case 5:
+                console.log('node%d: node dead', nodeId);
+                break;
+            case 6:
+                console.log('node%d: node alive', nodeId);
+                break;
+        }
+
+        // @todo notice frontend application
     }
 
     /**
      * Node added or set value
      *
      * @param nodeId
-     * @param comClass
+     * @param classId
      * @param value
      */
-    valueChanged(nodeId, comClass, value) {
+    valueChanged(nodeId, classId, value) {
 
-        let node = nodes[nodeId];
+        let node = this.getNodeById(nodeId);
 
-        if (!node.classes[comClass]) {
-            nodes[nodeId].classes[comClass] = {};
+        if (!node) {
+            return;
         }
 
-        if (node.ready) {
-            let oldValue = node.classes[comClass][value.index];
-            let newValue = value['value'];
-
-            console.log('node%d: changed: %d:%s:%s->%s', nodeId, comClass, value['label'], oldValue, newValue);
-
-            // @todo notify frontend
-        }
-
+        console.log('=======> Node %s value changed');
         console.log(value);
 
-        nodes[nodeId].classes[comClass][value.index] = value;
+        let updatedNode = node.setNodeValue(value);
+
+        // Update node reference in this class
+        this.setNode(nodeId, updatedNode);
+
         // @todo notify frontend
     }
 
@@ -130,16 +159,50 @@ class NodeEventService {
      *
      * @param nodeId
      * @param comClass
+     * @param instance
      * @param index
      */
-    valueRemoved(nodeId, comClass, index) {
-        console.log('remove node value for nodeId [%s] comClass [%s] ', nodeId, comClass);
+    valueRemoved(nodeId, comClass, instance, index) {
 
-        let node = nodes[nodeId];
+        const node = this.getNodeById(nodeId);
+        const valueId = nodeId+'-'+comClass+'-'+instance+'-'+index;
 
-        if (node.classes[comClass] && node.classes[comClass][index]) {
-            delete nodes[nodeId].classes[comClass][index];
+        if (!node) {
+            return;
         }
+
+        console.log('========> remove node value for nodeId [%s] valueId [%s] ', nodeId, valueId);
+
+        node.deleteNodeValue(valueId);
+    }
+
+    /**
+     * @param id
+     * @param node
+     * @returns {NodeEventService}
+     */
+    setNode(id, node) {
+
+        if (!node instanceof Node) {
+            throw new Error('node must be an instance of Node')
+        }
+
+        this.nodes[id] = node;
+
+        return this;
+    }
+
+    /**
+     *
+     * @param id
+     * @returns {null|Node}
+     */
+    getNodeById(id) {
+        if(typeof this.nodes[id] === 'undefined') {
+            return null;
+        }
+
+        return this.nodes[id];
     }
 
 }

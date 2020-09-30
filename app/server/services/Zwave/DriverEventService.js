@@ -1,5 +1,6 @@
 'use strict';
 
+
 class DriverEventService {
 
     constructor() {
@@ -37,41 +38,6 @@ class DriverEventService {
         console.log('failed to start driver');
 
         // process.exit();
-
-        // @todo notice frontend application
-    }
-
-    /**
-     * Devices notifications
-     *
-     * @param nodeId
-     * @param notification
-     */
-    nodeNotification(nodeId, notification) {
-
-        switch (notification) {
-            case 0:
-                console.log('node%d: message complete', nodeId);
-                break;
-            case 1:
-                console.log('node%d: timeout', nodeId);
-                break;
-            case 2:
-                console.log('node%d: nop', nodeId);
-                break;
-            case 3:
-                console.log('node%d: node awake', nodeId);
-                break;
-            case 4:
-                console.log('node%d: node sleep', nodeId);
-                break;
-            case 5:
-                console.log('node%d: node dead', nodeId);
-                break;
-            case 6:
-                console.log('node%d: node alive', nodeId);
-                break;
-        }
 
         // @todo notice frontend application
     }
