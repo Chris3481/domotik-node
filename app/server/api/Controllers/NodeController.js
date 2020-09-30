@@ -1,7 +1,6 @@
 'use strict';
 
-import DriverService from '../../services/Zwave/DriverService';
-import NodeService   from '../../services/Zwave/NodeService';
+import NodeEventService   from '../../services/Zwave/NodeEventService';
 
 class NodeController {
 
@@ -13,7 +12,7 @@ class NodeController {
      * @returns {any}
      */
     list(req, res) {
-        return res.json({nodes: NodeService.getList() });
+        return res.json({nodes: NodeEventService.getList() });
     }
 }
 

@@ -1,7 +1,7 @@
 'use strict';
 
-import DriverService from '../../services/Zwave/DriverService';
-import NodeService   from '../../services/Zwave/NodeService';
+import DriverEventService from '../../services/Zwave/DriverEventService';
+import NodeService        from '../../services/Zwave/NodeService';
 
 
 class DriverController {
@@ -14,7 +14,7 @@ class DriverController {
      * @returns {any}
      */
     homeId(req, res) {
-        return res.json({homeId: DriverService.getHomeId() });
+        return res.json({homeId: DriverEventService.getHomeId() });
     }
 
     /**

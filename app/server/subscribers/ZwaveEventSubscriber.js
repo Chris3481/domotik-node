@@ -2,8 +2,8 @@
 
 import Zwave from '../boot/zwave';
 
-let driverService = require('../services/Zwave/DriverService');
-let nodeService   = require('../services/Zwave/NodeService');
+let driverEventService = require('../services/Zwave/DriverEventService');
+let nodeEventService   = require('../services/Zwave/NodeEventService');
 
 class ZwaveEventSubscriber {
     
@@ -13,27 +13,27 @@ class ZwaveEventSubscriber {
     initDriverEvents() {
 
        Zwave.on('connected', version => {
-            driverService.connected(version);
+           driverEventService.connected(version);
         });
 
        Zwave.on('driver ready', homeId => {
-            driverService.driverReady(homeId);
+           driverEventService.driverReady(homeId);
         });
 
        Zwave.on('driver failed', () => {
-            driverService.driverFailed();
+           driverEventService.driverFailed();
         });
 
        Zwave.on('notification', (nodeId, notification) => {
-            driverService.nodeNotification(nodeId, notification)
+           driverEventService.nodeNotification(nodeId, notification)
         });
 
        Zwave.on('scan complete', () => {
-            driverService.scanComplete();
+           driverEventService.scanComplete();
         });
 
        Zwave.on('controller command', (n, rv, st, message) => {
-            driverService.controllerCommand(n, rv, st, message)
+           driverEventService.controllerCommand(n, rv, st, message)
         });
     }
 
@@ -43,15 +43,15 @@ class ZwaveEventSubscriber {
     initNodeEvents() {
 
        Zwave.on('node added', nodeId => {
-            nodeService.nodeAdded(nodeId);
+           nodeEventService.nodeAdded(nodeId);
         });
 
        Zwave.on('node ready', (nodeId, nodeInfo) => {
-            nodeService.nodeReady(nodeId, nodeInfo);
+           nodeEventService.nodeReady(nodeId, nodeInfo);
         });
 
        Zwave.on('node event', (nodeId, data) => {
-            nodeService.nodeEvent(nodeId, data);
+           nodeEventService.nodeEvent(nodeId, data);
         });
     }
 
@@ -63,15 +63,15 @@ class ZwaveEventSubscriber {
     initValueEvents()
     {
        Zwave.on('value added', (nodeId, comClass, value) => {
-            nodeService.setNodeValue(nodeId, comClass, value);
+           nodeEventService.valueChanged(nodeId, comClass, value);
         });
 
        Zwave.on('value changed', (nodeId, comClass, value) => {
-            nodeService.setNodeValue(nodeId, comClass, value);
+           nodeEventService.valueChanged(nodeId, comClass, value);
         });
 
        Zwave.on('value removed', (nodeId, comClass, index) => {
-            nodeService.removeNodeValue(nodeId, comClass, index);
+           nodeEventService.valueRemoved(nodeId, comClass, index);
         });
     }
 }

@@ -1,6 +1,11 @@
 'use strict';
 
-class DriverService {
+class DriverEventService {
+
+    constructor() {
+        this.version = null;
+        this.homeId  = null;
+    }
 
     /**
      * Connected to openZwave controller
@@ -30,7 +35,7 @@ class DriverService {
      */
     driverFailed() {
         console.log('failed to start driver');
-       
+
         // process.exit();
 
         // @todo notice frontend application
@@ -103,4 +108,4 @@ class DriverService {
     }
 }
 
-module.exports = new DriverService();
+module.exports = new DriverEventService();
