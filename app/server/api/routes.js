@@ -10,13 +10,27 @@ let router = express.Router();
 
 
 
-router.get('/', (req, res) => { res.json({ version }) });
+router.get('/', (req, res) => {
+    res.json({ version });
+});
 
 // Driver
-router.get('/driver/home-id', (req, res) => { DriverController.homeId(req, res) });
+router.get('/driver/home-id', (req, res) => {
+    DriverController.homeId(req, res);
+});
+
+router.get('/driver/start-inclusion', (req, res) => {
+    DriverController.startInclusion(req, res);
+});
+
+router.get('/driver/start-exclusion', (req, res) => {
+    DriverController.startExclusion(req, res);
+});
 
 // Device
-router.get('/device/list', (req, res) => { NodeController.list(req, res) });
+router.get('/device/list', (req, res) => {
+    NodeController.list(req, res);
+});
 
 
 module.exports = router;

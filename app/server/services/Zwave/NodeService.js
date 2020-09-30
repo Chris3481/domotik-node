@@ -125,8 +125,7 @@ class DriverService {
      * @param comClass
      * @param index
      */
-    removeNodeValue(nodeId, comClass, index)
-    {
+    removeNodeValue(nodeId, comClass, index) {
         console.log('remove node value for nodeId [%s] comClass [%s] ', nodeId, comClass);
 
         let node = nodes[nodeId];
@@ -135,6 +134,22 @@ class DriverService {
             delete nodes[nodeId].classes[comClass][index];
         }
     }
+
+    /**
+     * Start inclusion mode
+     */
+    startInclusion() {
+        return Zwave.addNode(true);
+    }
+
+    /**
+     * Start inclusion mode
+     */
+    startExclusion() {
+        return Zwave.removeNode();
+    }
+
+
 }
 
 module.exports = new DriverService();
