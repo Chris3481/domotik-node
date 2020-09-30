@@ -1,0 +1,21 @@
+{
+    "name": "node-server",
+    "version": "1.0.0",
+    "description": "Node server for openZwave",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "keywords": [
+        "zwave",
+        "z-wave",
+        "home automation",
+        "openzwave",
+        "open-zwave"
+    ],
+    "author": "Chris <christopherdubois3@gmail.com@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "openzwave-shared": "^1.7.0"
+    }
+}

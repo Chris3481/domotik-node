@@ -1,0 +1,21 @@
+version: "3.6"
+services:
+
+  node-server:
+    build: ./node
+    container_name: node-server
+    restart: always
+    working_dir: /var/app
+    volumes:
+      - ../app:/var/app
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    expose:
+      - "8081"
+    networks:
+      - raspbery-node
+    command: "node app.js"
+
+networks:
+  raspbery-node:
+    driver: bridge
