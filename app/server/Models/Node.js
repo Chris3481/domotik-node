@@ -12,7 +12,6 @@ class Node {
             type:           '',
             name:           '',
             loc:            '',
-            classes:        {},
             values:         {},
             ready:          false,
         };
@@ -57,6 +56,13 @@ class Node {
         }
 
         return this.data.values[valueId];
+    }
+
+    /**
+     * @returns {*}
+     */
+    getUserValues() {
+        return Object.values(this.data.values).filter(value => value.genre === 'user');
     }
 
     /**

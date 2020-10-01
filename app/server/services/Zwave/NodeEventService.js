@@ -1,7 +1,7 @@
 'use strict';
 
 import Node  from '../../Models/Node';
-
+import Zwave from '../../boot/zwave';
 
 /**
  * This class is handles the zwave node events
@@ -46,7 +46,7 @@ class NodeEventService {
         console.log('<============== New node ready %s ==============>', nodeId);
         console.log(nodeInfo);
 
-        const node = this.getNodeById(nodeId);
+        let node = this.getNodeById(nodeId);
 
         if (!node) {
             return;
@@ -57,28 +57,32 @@ class NodeEventService {
         // Update node reference in this class
         this.setNode(nodeId, updatedNode);
 
+        this.enablePolling(node);
+    }
 
-        // todo do some thing smart for polling
+    /**
+     * Enable polling for all available values
+     *
+     * @param node
+     * @returns {null}
+     */
+    enablePolling(node) {
 
-        // const comClasses = node.getAllClasses();
-        //
-        // for (let comClass in comClasses) {
-        //     switch (comClass) {
-        //         case 0x25: // COMMAND_CLASS_SWITCH_BINARY
-        //         case 0x26: // COMMAND_CLASS_SWITCH_MULTILEVEL
-        //
-        //             console.log('Polling: node id [%d] comClass [%d]', nodeId, comClass);
-        //             Zwave.enablePoll(nodeId, comClass);
-        //             break;
-        //     }
-        //
-        //
-        //     let values = nodes[nodeId].classes[comClass];
-        //
-        //     for (let idx in values) {
-        //         console.log('nodeId [%d]  %s = %s', nodeId, values[idx]['label'], values[idx]['value']);
-        //     }
-        //}
+        if (!node instanceof Node) {
+            throw new Error('node must be an instance of Node')
+        }
+
+        const userValues = node.getUserValues();
+
+        if (!userValues) {
+            return null;
+        }
+
+        userValues.forEach((value) => {
+            console.log('===============> Polling: node id [%d] [%s]', value.node_id, value.label);
+
+            Zwave.enablePoll(value, 500);
+        });
     }
 
     /**
@@ -143,7 +147,7 @@ class NodeEventService {
             return;
         }
 
-        console.log('=======> Node %s value changed');
+        console.log('=======> Node %s value changed', nodeId);
         console.log(value);
 
         let updatedNode = node.setNodeValue(value);
