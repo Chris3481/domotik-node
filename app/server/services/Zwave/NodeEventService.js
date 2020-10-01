@@ -43,6 +43,8 @@ class NodeEventService {
      */
     nodeReady(nodeId, nodeInfo) {
 
+        nodeInfo.ready = true;
+
         console.log('<============== New node ready %s ==============>', nodeId);
         console.log(nodeInfo);
 
@@ -105,6 +107,8 @@ class NodeEventService {
      */
     nodeNotification(nodeId, notification) {
 
+        let node = this.getNodeById(nodeId);
+
         switch (notification) {
             case 0:
                 console.log('node%d: message complete', nodeId);
@@ -123,9 +127,16 @@ class NodeEventService {
                 break;
             case 5:
                 console.log('node%d: node dead', nodeId);
+
+                // Do not remove as the node can come back later
+                this.setNode(nodeId, node.setReady(false));
+
                 break;
             case 6:
                 console.log('node%d: node alive', nodeId);
+
+                this.setNode(nodeId, node.setReady(true));
+
                 break;
         }
 

@@ -32,7 +32,7 @@ class Node {
             type:           nodeInfo.type,
             name:           nodeInfo.name,
             loc:            nodeInfo.loc,
-            ready:          true,
+            ready:          nodeInfo.ready,
         });
 
         return this;
@@ -43,6 +43,15 @@ class Node {
      */
     isReady() {
         return this.data.ready;
+    }
+
+    /**
+     * @param state
+     */
+    setReady(state) {
+        this.data.ready = state;
+
+        return this;
     }
 
     /**
