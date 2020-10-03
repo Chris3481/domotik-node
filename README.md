@@ -44,7 +44,7 @@ All the configuration is stored in app/server/config
 ### Endpoints
 
 ```shell script
-GET /
+GET /api
 ```
 Get version 
 
@@ -54,7 +54,12 @@ GET /api/device/list
 Get all ready devices in the network
 
 ```shell script
-GET /api//driver/home-id
+GET /api/device/:nodeId/:valueId/set-value/:value
+```
+Set value for nodeId and valueId
+
+```shell script
+GET /api/driver/home-id
 ```
 Get your network home ID
 
