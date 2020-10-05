@@ -13,7 +13,13 @@ class NodeController {
      * @returns {any}
      */
     list(req, res) {
-        return res.json({nodes: NodeEventService.getList() });
+        let response = [];
+
+        let list = NodeEventService.getList();
+
+        list.forEach((node) => { response.push(node.data); });
+
+        return res.json({nodes: response });
     }
 
     /**
