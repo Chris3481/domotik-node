@@ -16,7 +16,7 @@
         ]
     },
     "scripts": {
-        "start": "npm run prod",
+        "start": "npm install && npm run prod",
         "build": "npm run clean && npm run transpile",
         "server": "node ./dist-server/server.js",
         "dev": "NODE_ENV=development npm run build && npm run server",
@@ -35,10 +35,6 @@
     "author": "Chris <christopherdubois3@gmail.com@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "@babel/cli": "^7.8.4",
-        "@babel/core": "^7.9.6",
-        "@babel/preset-env": "^7.9.6",
-        "babel": "^6.23.0",
         "body-parser": "^1.19.0",
         "compression": "^1.7.4",
         "express": "^4.17.1",
@@ -51,5 +47,10 @@
         "presets": [
             "@babel/preset-env"
         ]
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.12.1",
+        "@babel/core": "^7.12.3",
+        "@babel/preset-env": "^7.12.1"
     }
 }
