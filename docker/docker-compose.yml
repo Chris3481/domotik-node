@@ -10,14 +10,8 @@ services:
       - ../app:/var/app
     devices:
       - /dev/ttyACM0:/dev/ttyACM0
-    expose:
-      - "8081"
     ports:
       - "8081:8081"
-    networks:
-      - raspbery-node
+    environment:
+      - PORT=8081
     command: "npm start"
-
-networks:
-  raspbery-node:
-    driver: bridge

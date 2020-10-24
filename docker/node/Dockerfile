@@ -24,4 +24,3 @@ RUN cd open-zwave && make && make install
 
 # Add library to ARM library
 RUN cp /usr/local/lib/libopen* /usr/lib/arm-linux-gnueabihf
-
