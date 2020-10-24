@@ -173,14 +173,11 @@ class NodeEventService {
      * Node removed value
      *
      * @param nodeId
-     * @param comClass
-     * @param instance
-     * @param index
+     * @param valueId
      */
-    valueRemoved(nodeId, comClass, instance, index) {
+    valueRemoved(nodeId, valueId) {
 
         const node = this.getNodeById(nodeId);
-        const valueId = nodeId+'-'+comClass+'-'+instance+'-'+index;
 
         if (!node) {
             return;

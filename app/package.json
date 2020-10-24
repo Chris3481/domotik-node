@@ -35,13 +35,16 @@
     "author": "Chris <christopherdubois3@gmail.com@gmail.com>",
     "license": "MIT",
     "dependencies": {
+        "amqplib": "^0.6.0",
         "body-parser": "^1.19.0",
         "compression": "^1.7.4",
         "express": "^4.17.1",
         "helmet": "^3.23.3",
         "nodemon": "^2.0.4",
+        "npm": "^6.14.8",
         "openzwave-shared": "^1.7.0",
-        "rimraf": "^3.0.2"
+        "rimraf": "^3.0.2",
+        "start": "^5.1.0"
     },
     "babel": {
         "presets": [
@@ -51,6 +54,9 @@
     "devDependencies": {
         "@babel/cli": "^7.12.1",
         "@babel/core": "^7.12.3",
-        "@babel/preset-env": "^7.12.1"
+        "@babel/preset-env": "^7.12.1",
+        "babel-core": "^6.26.3",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.7.0"
     }
 }
