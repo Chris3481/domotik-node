@@ -33,6 +33,11 @@ class Publisher {
       });
    }
 
+   disconnect() {
+       this.chanel.disconnect();
+       this.chanel = null;
+   }
+
    /**
     * @param queueName
     * @param data
@@ -51,7 +56,14 @@ class Publisher {
          }
       }
 
-      this.chanel.sendToQueue(queueName, new Buffer(JSON.stringify(data)));
+      const payload = {
+          job:  config.workerName,
+          data: data,
+      }
+
+      this.chanel.sendToQueue(queueName, new Buffer(JSON.stringify(payload)));
+
+      this.disconnect();
    }
 }
 
