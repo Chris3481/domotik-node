@@ -42,25 +42,25 @@ class ZwaveEventSubscriber {
        Zwave.on('node added', nodeId => {
            nodeEventService.nodeAdded(nodeId);
 
-           Publisher.publishToQueue('test', {event:'node_added', data:nodeId});
+           Publisher.publishToQueue( {event:'node_added', data:nodeId});
        });
 
        Zwave.on('node ready', (nodeId, nodeInfo) => {
            nodeEventService.nodeReady(nodeId, nodeInfo);
 
-           Publisher.publishToQueue('test', {event:'node_ready', data:{nodeId:nodeId, nodeInfo:nodeInfo}});
+           Publisher.publishToQueue({event:'node_ready', data:{nodeId:nodeId, nodeInfo:nodeInfo}});
        });
 
        Zwave.on('node event', (nodeId, data) => {
            nodeEventService.nodeEvent(nodeId, data);
 
-           Publisher.publishToQueue('test', {event:'node_event', data:{nodeId:nodeId, nodeData:data}});
+           Publisher.publishToQueue({event:'node_event', data:{nodeId:nodeId, nodeData:data}});
        });
 
         Zwave.on('notification', (nodeId, notification) => {
             nodeEventService.nodeNotification(nodeId, notification);
 
-            Publisher.publishToQueue('test', {event:'node_notification', data:{nodeId:nodeId, nodeData:notification}});
+            Publisher.publishToQueue({event:'node_notification', data:{nodeId:nodeId, nodeData:notification}});
         });
     }
 
@@ -72,22 +72,22 @@ class ZwaveEventSubscriber {
        Zwave.on('value added', (nodeId, comClass, value) => {
            nodeEventService.valueChanged(nodeId, comClass, value);
 
-           Publisher.publishToQueue('test', {event:'node_value_added', data:{nodeId:nodeId, nodeData:value}});
+           Publisher.publishToQueue({event:'node_value_added', data:{nodeId:nodeId, nodeData:value}});
        });
 
        Zwave.on('value changed', (nodeId, comClass, value) => {
            nodeEventService.valueChanged(nodeId, comClass, value);
 
-           Publisher.publishToQueue('test', {event:'node_value_changed', data:{nodeId:nodeId, nodeData:value}});
+           Publisher.publishToQueue({event:'node_value_changed', data:{nodeId:nodeId, nodeData:value}});
        });
 
        Zwave.on('value removed', (nodeId, comClass,instance,  index) => {
 
            const valueId = nodeId+'-'+comClass+'-'+instance+'-'+index;
 
-           Publisher.nodeEventService.valueRemoved(nodeId, valueId);
+           nodeEventService.valueRemoved(nodeId, valueId);
 
-           Publisher.publishToQueue('test', {event:'node_value_removed', data:{nodeId:nodeId, valueId:valueId}});
+           Publisher.publishToQueue({event:'node_value_removed', data:{nodeId:nodeId, valueId:valueId}});
         });
     }
 }

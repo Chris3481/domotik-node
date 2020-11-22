@@ -39,11 +39,10 @@ class Publisher {
    }
 
    /**
-    * @param queueName
     * @param data
     * @returns {Promise<boolean>}
     */
-   async publishToQueue(queueName, data) {
+   async publishToQueue(data) {
 
       if (!config.enable) {
          return false;
@@ -61,7 +60,7 @@ class Publisher {
           data: data,
       }
 
-      this.chanel.sendToQueue(queueName, new Buffer(JSON.stringify(payload)));
+      this.chanel.sendToQueue(config.queueName, new Buffer(JSON.stringify(payload)));
 
       this.disconnect();
    }

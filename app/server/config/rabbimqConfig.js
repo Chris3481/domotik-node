@@ -6,5 +6,6 @@ module.exports = {
     port:       5672,
     user:       'rabbit',
     password:   'rabbit',
+    queueName:  'default',
     workerName: 'App\\Jobs\\Worker',
 };

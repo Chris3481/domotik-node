@@ -139,8 +139,6 @@ class NodeEventService {
 
                 break;
         }
-
-        // @todo notice frontend application
     }
 
     /**
