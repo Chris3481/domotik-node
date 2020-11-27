@@ -34,8 +34,10 @@ class Publisher {
    }
 
    disconnect() {
-       this.chanel.disconnect();
-       this.chanel = null;
+       if (this.chanel) {
+           this.chanel.disconnect();
+           this.chanel = null;
+       }
    }
 
    /**
@@ -48,21 +50,26 @@ class Publisher {
          return false;
       }
 
-      if (!this.chanel) {
-         let res = this.connect();
-         if (!res) {
-            return false;
-         }
+      try {
+          if (!this.chanel) {
+              let res = this.connect();
+              if (!res) {
+                  return false;
+              }
+          }
+
+          const payload = {
+              job:  config.workerName,
+              data: data,
+          }
+
+          this.chanel.sendToQueue(config.queueName, new Buffer(JSON.stringify(payload)));
+
+          // this.disconnect();
+
+      } catch(error) {
+          console.error(error);
       }
-
-      const payload = {
-          job:  config.workerName,
-          data: data,
-      }
-
-      this.chanel.sendToQueue(config.queueName, new Buffer(JSON.stringify(payload)));
-
-      this.disconnect();
    }
 }
 
