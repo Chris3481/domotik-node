@@ -3,6 +3,7 @@
 require("babel-core/register");
 require("babel-polyfill");
 
+import moment from 'moment';
 import amqp   from 'amqplib/callback_api';
 import config from '../../config/rabbimqConfig';
 
@@ -57,6 +58,8 @@ class Publisher {
                   return false;
               }
           }
+
+          data.timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
 
           const payload = {
               job:  config.workerName,
