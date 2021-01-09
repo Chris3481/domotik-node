@@ -81,6 +81,14 @@ class ZwaveEventSubscriber {
            Publisher.publishToQueue({event:'node_value_changed', nodeId:nodeId, nodeData:value});
        });
 
+        Zwave.on('value refreshed', (nodeId, comClass, value) => {
+
+            console.log('=======> Node %s value refreshed', nodeId);
+            console.log(value);
+
+            Publisher.publishToQueue({event:'node_value_refreshed', nodeId:nodeId, nodeData:value});
+        });
+
        Zwave.on('value removed', (nodeId, comClass,instance,  index) => {
 
            const valueId = nodeId+'-'+comClass+'-'+instance+'-'+index;

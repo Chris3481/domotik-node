@@ -2,6 +2,7 @@
 
 import Node  from '../../Models/Node';
 import Zwave from '../../boot/zwave';
+import logger from "../Logger";
 
 /**
  * This class is handles the zwave node events
@@ -28,7 +29,7 @@ class NodeEventService {
      */
     nodeAdded(nodeId) {
 
-        console.log('<============== New node detected %s ==============>', nodeId)
+        logger.info( 'New node detected', {nodeId});
 
         const node = new Node();
 
@@ -45,8 +46,7 @@ class NodeEventService {
 
         nodeInfo.ready = true;
 
-        console.log('<============== New node ready %s ==============>', nodeId);
-        console.log(nodeInfo);
+        logger.info( 'New node ready', {nodeId, nodeInfo});
 
         let node = this.getNodeById(nodeId);
 
@@ -59,7 +59,7 @@ class NodeEventService {
         // Update node reference in this class
         this.setNode(nodeId, updatedNode);
 
-        this.enablePolling(node);
+        // this.enablePolling(node);
     }
 
     /**
@@ -94,6 +94,7 @@ class NodeEventService {
      * @param data
      */
     nodeEvent(nodeId, data) {
+
         console.log('================> node%d event: Basic set %d', nodeId, data);
 
         //@todo log this to the database / notice frontend
@@ -111,29 +112,29 @@ class NodeEventService {
 
         switch (notification) {
             case 0:
-                console.log('node%d: message complete', nodeId);
+                logger.log('info', 'Node notification: Message complete', {nodeId});
                 break;
             case 1:
-                console.log('node%d: timeout', nodeId);
+                logger.log('info', 'Node notification: Timeout', {nodeId});
                 break;
             case 2:
-                console.log('node%d: nop', nodeId);
+                logger.log('info', 'Node notification: Nop', {nodeId});
                 break;
             case 3:
-                console.log('node%d: node awake', nodeId);
+                logger.log('info', 'Node notification: Awake', {nodeId});
                 break;
             case 4:
-                console.log('node%d: node sleep', nodeId);
+                logger.log('info', 'Node notification: Node sleep', {nodeId});
                 break;
             case 5:
-                console.log('node%d: node dead', nodeId);
+                logger.log('info', 'Node notification: Node dead', {nodeId});
 
                 // Do not remove as the node can come back later
                 this.setNode(nodeId, node.setReady(false));
 
                 break;
             case 6:
-                console.log('node%d: node alive', nodeId);
+                logger.log('info', 'Node notification: Node alive', {nodeId});
 
                 this.setNode(nodeId, node.setReady(true));
 

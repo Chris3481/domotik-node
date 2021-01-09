@@ -1,79 +1,65 @@
 'use strict';
 
-require("babel-core/register");
 require("babel-polyfill");
 
 import moment from 'moment';
-import amqp   from 'amqplib/callback_api';
+import amqp   from 'amqplib';
 import config from '../../config/rabbimqConfig';
+import logger from "../Logger";
+
 
 
 class Publisher {
 
-   constructor() {
-      this.chanel = null;
-   }
+    constructor() {
+        this.chanel = null;
+        this.connexion = null;
+    }
 
-   /**
-    * Connect to rabbitMQ
-    */
-   connect() {
+    /**
+     * @returns {Promise<void>}
+     */
+    async connect() {
 
-       const opt = { credentials: require('amqplib').credentials.plain(config.user, config.password) };
+        if (!config.enable) {
+            return;
+        }
 
-       amqp.connect('amqp://'+config.host+':'+config.port, opt, (err, conn) => {
+        const opt = { credentials: require('amqplib').credentials.plain(config.user, config.password) };
 
-         if (err) {
-            console.log(err);
-            return false;
-         }
+        this.connexion = await amqp.connect('amqp://'+config.host+':'+config.port, opt);
 
-         conn.createChannel((err, channel) => {
-            this.chanel = channel;
-         });
-      });
-   }
+        this.chanel = await this.connexion.createChannel();
+    }
 
-   disconnect() {
-       if (this.chanel) {
-           this.chanel.disconnect();
-           this.chanel = null;
-       }
-   }
+    /**
+     * @param data
+     * @returns {Promise<void>}
+     */
+    async publishToQueue(data) {
 
-   /**
-    * @param data
-    * @returns {Promise<boolean>}
-    */
-   async publishToQueue(data) {
+        if (!config.enable) {
+            return;
+        }
 
-      if (!config.enable) {
-         return false;
-      }
+        try {
+            if (!this.connexion) {
+                await this.connect();
+            }
 
-      try {
-          if (!this.chanel) {
-              let res = this.connect();
-              if (!res) {
-                  return false;
-              }
-          }
+            data.timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
 
-          data.timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
+            const payload = {
+                job:  config.workerName,
+                data: data,
+            }
 
-          const payload = {
-              job:  config.workerName,
-              data: data,
-          }
+            await this.chanel.sendToQueue(config.queueName, new Buffer(JSON.stringify(payload)));
 
-          this.chanel.sendToQueue(config.queueName, new Buffer(JSON.stringify(payload)));
-
-          // this.disconnect();
-
-      } catch(error) {
-          console.error(error);
-      }
-   }
+        } catch(error) {
+            logger.error('RabbitMq error', {error})
+        }
+    }
 }
 
 

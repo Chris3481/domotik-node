@@ -1,5 +1,7 @@
 'use strict';
 
+import logger from "../Logger";
+
 
 class DriverEventService {
 
@@ -16,8 +18,7 @@ class DriverEventService {
     connected(version) {
         this.version = version;
 
-        console.log("**** CONNECTED ****");
-        console.log("OpenZwave version:", version);
+        logger.info('Zwave connected', {version});
     }
 
     /**
@@ -35,23 +36,14 @@ class DriverEventService {
      *
      */
     driverFailed() {
-        console.log('failed to start driver');
-
-        // process.exit();
-
-        // @todo notice frontend application
+        logger.error('Failed to start Zwave driver');
     }
 
     /**
      * Network scan complete
      */
     scanComplete() {
-
-        console.log('====> scan complete');
-        // set dimmer node 5 to 50%
-        //    zwave.setValue(5,38,1,0,50);
-        //zwave.setValue({node_id:5,	class_id: 38,	instance:1,	index:0}, 50 );
-        // this.zwave.requestAllConfigParams(3);
+        logger.info('Zwave scan complete');
     }
 
     /**
@@ -63,7 +55,7 @@ class DriverEventService {
      * @param message
      */
     controllerCommand(n, rv, st, message) {
-        console.log('controller command feedback: %s node==%d, retval=%d, state=%d', message, n, rv, st);
+        // console.log('controller command feedback: %s node==%d, retval=%d, state=%d', message, n, rv, st);
     }
 
     /**
