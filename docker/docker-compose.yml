@@ -15,8 +15,6 @@ services:
     environment:
       - PORT=8081
     command: "npm run watch:dev"
-    depends_on:
-      - rabbitmq
     networks:
       - domotik-network
 
