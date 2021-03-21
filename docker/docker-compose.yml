@@ -14,4 +14,25 @@ services:
       - "8081:8081"
     environment:
       - PORT=8081
-    command: "npm start"
+    command: "npm run watch:dev"
+    depends_on:
+      - rabbitmq
+    networks:
+      - domotik-network
+
+  # RabbitMq service
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.7-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbit"
+      RABBITMQ_DEFAULT_PASS: "rabbit"
+    networks:
+      - domotik-network
+
+networks:
+  domotik-network:
+    driver: bridge
