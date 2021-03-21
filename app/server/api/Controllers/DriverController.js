@@ -2,6 +2,7 @@
 
 import DriverEventService from '../../services/Zwave/DriverEventService';
 import DriverService      from '../../services/Zwave/DriverService';
+import NodeService        from '../../services/Zwave/NodeService';
 
 
 class DriverController {
