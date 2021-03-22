@@ -1,7 +1,7 @@
 'use strict';
 
 import DriverEventService from '../../services/Zwave/DriverEventService';
-import NodeService        from '../../services/Zwave/NodeService';
+import DriverService      from '../../services/Zwave/DriverService';
 
 
 class DriverController {
@@ -49,6 +49,44 @@ class DriverController {
         }
 
         return res.status(400).json({message: 'exclusion failed to start'});
+    }
+
+    /**
+     * Soft reset the driver
+     *
+     * @param req
+     * @param res
+     * @returns {any}
+     */
+    softReset(req, res) {
+
+        try {
+            DriverService.softReset();
+
+            return res.json({message: 'Soft reset OK'});
+
+        } catch (e) {
+            return res.json({message: 'hard reset device'});
+        }
+    }
+
+    /**
+     * Start inclusion mode
+     *
+     * @param req
+     * @param res
+     * @returns {any}
+     */
+    hardReset(req, res) {
+
+        try {
+            DriverService.hardReset();
+
+            return res.json({message: 'Hard reset OK'});
+
+        } catch (e) {
+            return res.json({message: 'hard reset device'});
+        }
     }
 }
 

@@ -27,6 +27,14 @@ router.get('/driver/start-exclusion', (req, res) => {
     DriverController.startExclusion(req, res);
 });
 
+router.get('/driver/soft-reset', (req, res) => {
+    DriverController.softReset(req, res);
+});
+
+router.get('/driver/hard-reset', (req, res) => {
+    DriverController.hardReset(req, res);
+});
+
 // Device
 router.get('/device/list', (req, res) => {
     NodeController.list(req, res);
