@@ -28,11 +28,10 @@ class NodeController {
      */
     setNodeValue(req, res) {
 
-        const nodeId  = req.params.nodeId;
         const valueId = req.params.valueId;
         const value   = req.params.value;
 
-        NodeService.setNodeValue(nodeId, valueId, value);
+        NodeService.setNodeValue(valueId, value);
 
         return res.json({message: 'value set'});
     }

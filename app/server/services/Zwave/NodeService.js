@@ -20,11 +20,12 @@ class NodeService {
     }
 
     /**
-     * @param nodeId
      * @param valueId
      * @param value
      */
-    setNodeValue(nodeId, valueId, value) {
+    setNodeValue(valueId, value) {
+
+        const nodeId = valueId.charAt(0);
 
         const node = NodeEventService.getNodeById(nodeId);
         if (!node) {

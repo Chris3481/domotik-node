@@ -40,7 +40,7 @@ router.get('/device/list', (req, res) => {
     NodeController.list(req, res);
 });
 
-router.get('/device/:nodeId/:valueId/set-value/:value', (req, res) => {
+router.get('/device/set-value/:valueId/:value', (req, res) => {
     NodeController.setNodeValue(req, res);
 });
 
