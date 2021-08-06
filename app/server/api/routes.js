@@ -44,4 +44,12 @@ router.get('/device/set-value/:valueId/:value', (req, res) => {
     NodeController.setNodeValue(req, res);
 });
 
+router.get('/device/get-node-values/user/:nodeId', (req, res) => {
+    NodeController.getNodeUserValues(req, res);
+});
+
+router.get('/device/get-node-values/config/:nodeId', (req, res) => {
+    NodeController.getNodeConfigValues(req, res);
+});
+
 module.exports = router;

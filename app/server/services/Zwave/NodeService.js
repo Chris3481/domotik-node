@@ -51,6 +51,32 @@ class NodeService {
         return Zwave.setValue(nodeId, nodeValue.class_id,  nodeValue.instance, nodeValue.index, formattedValue);
     }
 
+    /**
+     * @param nodeId
+     */
+    getNodeUserValues(nodeId) {
+
+        const node = NodeEventService.getNodeById(nodeId);
+        if (!node) {
+            throw new Error('Unable to set node value: node not found');
+        }
+
+        return node.getUserValues();
+    }
+
+    /**
+     * @param nodeId
+     */
+    getNodeConfigValues(nodeId) {
+
+        const node = NodeEventService.getNodeById(nodeId);
+        if (!node) {
+            throw new Error('Unable to set node value: node not found');
+        }
+
+        return node.getConfigValues();
+    }
+
 }
 
 module.exports = new NodeService();

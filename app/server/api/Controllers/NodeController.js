@@ -35,6 +35,34 @@ class NodeController {
 
         return res.json({message: 'value set'});
     }
+
+    /**
+     * @param req
+     * @param res
+     * @returns {*}
+     */
+    getNodeUserValues(req, res) {
+
+        const nodeId = req.params.nodeId;
+
+        const values = NodeService.getNodeUserValues(nodeId);
+
+        return res.json(values);
+    }
+
+    /**
+     * @param req
+     * @param res
+     * @returns {*}
+     */
+    getNodeConfigValues(req, res) {
+
+        const nodeId = req.params.nodeId;
+
+        const values = NodeService.getNodeConfigValues(nodeId);
+
+        return res.json(values);
+    }
 }
 
 module.exports = new NodeController();

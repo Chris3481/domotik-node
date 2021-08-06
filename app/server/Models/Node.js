@@ -75,6 +75,13 @@ class Node {
     }
 
     /**
+     * @returns {*}
+     */
+    getConfigValues() {
+        return Object.values(this.data.values).filter(value => value.genre === 'config');
+    }
+
+    /**
      * @param value
      * @returns {Node}
      */

@@ -54,6 +54,16 @@ GET /api/device/list
 Get all ready devices in the network
 
 ```shell script
+GET /device/get-node-values/user/:nodeId
+```
+Get node user values
+
+```shell script
+GET /device/get-node-values/config/:nodeId
+```
+Get node config values
+
+```shell script
 GET /api/device/:nodeId/:valueId/set-value/:value
 ```
 Set value for nodeId and valueId
