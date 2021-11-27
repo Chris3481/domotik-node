@@ -1,6 +1,6 @@
 "use strict";
 
-import { version } from '../../package.json';
+import { version } from '../package.json';
 import express     from 'express';
 
 import DriverController from './Controllers/DriverController'

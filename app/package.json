@@ -2,7 +2,7 @@
     "name": "node-server",
     "version": "1.0.0",
     "description": "Node server for openZwave",
-    "main": "server/server.js",
+    "main": "server.js",
     "nodemonConfig": {
         "exec": "npm run dev",
         "watch": [
