@@ -1,6 +1,6 @@
 'use strict';
 
-import Zwave            from '../../boot/zwave';
+import {Zwave}          from '../../boot/zwave';
 
 
 class DriverService {
@@ -20,4 +20,4 @@ class DriverService {
     }
 }
 
-module.exports = new DriverService();
+export const driverService = new DriverService();

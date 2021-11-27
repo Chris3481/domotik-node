@@ -1,9 +1,10 @@
 version: "2.0"
 services:
 
-  node-server:
-    build: ./node
-    container_name: node-server
+  node-server-v2:
+    # build: ./node
+    image: node:14
+    container_name: node-server-v2
     restart: always
     working_dir: /var/app
     volumes:
@@ -14,7 +15,7 @@ services:
       - "8081:8081"
     environment:
       - PORT=8081
-    command: "npm run watch:dev"
+    command: "npm run start"
     networks:
       - domotik-network
 

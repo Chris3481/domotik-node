@@ -1,9 +1,12 @@
 'use strict';
 
-import logger from "../Logger";
+import {Logger} from "../Logger";
 
 
 class DriverEventService {
+    
+    private version: null;
+    private homeId: null;
 
     constructor() {
         this.version = null;
@@ -18,7 +21,7 @@ class DriverEventService {
     connected(version) {
         this.version = version;
 
-        logger.info('Zwave connected', {version});
+        Logger.info('Zwave connected', {version});
     }
 
     /**
@@ -36,14 +39,14 @@ class DriverEventService {
      *
      */
     driverFailed() {
-        logger.error('Failed to start Zwave driver');
+        Logger.error('Failed to start Zwave driver');
     }
 
     /**
      * Network scan complete
      */
     scanComplete() {
-        logger.info('Zwave scan complete');
+        Logger.info('Zwave scan complete');
     }
 
     /**
@@ -66,4 +69,6 @@ class DriverEventService {
     }
 }
 
-module.exports = new DriverEventService();
+
+
+export const driverEventService = new DriverEventService();

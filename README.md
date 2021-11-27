@@ -32,11 +32,11 @@ docker-compose run node-server npm run watch:dev
 
 All the configuration is stored in app/server/config
 
-- zwaveConfig.js
+- zwaveConfig.ts
 
 `driverPath => The path of the zwave adapter. Default id /dev/ttyACM0`
 
-- apiConfig.js
+- apiConfig.ts
 
 `port => The port to access the API. default is 8081`
 

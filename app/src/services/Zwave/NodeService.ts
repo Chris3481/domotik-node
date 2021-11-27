@@ -1,7 +1,9 @@
 'use strict';
 
-import Zwave            from '../../boot/zwave';
-import NodeEventService from './NodeEventService';
+import {Zwave} from '../../boot/zwave';
+import {nodeEventService} from './NodeEventService';
+import {ValueID} from "@zwave-js/core";
+import {ZWaveNode} from "zwave-js";
 
 class NodeService {
 
@@ -9,14 +11,14 @@ class NodeService {
      * Start inclusion mode
      */
     startInclusion() {
-        return Zwave.addNode(true);
+        return Zwave.controller.beginInclusion();
     }
 
     /**
      * Start inclusion mode
      */
     startExclusion() {
-        return Zwave.removeNode();
+        return Zwave.controller.beginExclusion();
     }
 
     /**
@@ -27,28 +29,30 @@ class NodeService {
 
         const nodeId = valueId.charAt(0);
 
-        const node = NodeEventService.getNodeById(nodeId);
+        const node: ZWaveNode = nodeEventService.getNodeById(nodeId);
         if (!node) {
             throw new Error('Unable to set node value: node not found');
         }
 
-        const nodeValue = node.getValueById(valueId);
+        const nodeValue = node.getValue(valueId);
         if (!nodeValue) {
             throw new Error('Unable to set node value: value not found');
         }
 
         let formattedValue = null;
 
-        if (nodeValue.type === 'bool') {
-            formattedValue = (value == 'true' || value == '1');
-        } else {
+        //if (nodeValue.type === 'bool') {
+        //    formattedValue = (value == 'true' || value == '1');
+        //} else {
             // @todo format other value types
-            formattedValue = value;
-        }
+        //    formattedValue = value;
+        //}
 
         console.log('================> Setting node %s valueId %s value', nodeId, valueId, value);
 
-        return Zwave.setValue(nodeId, nodeValue.class_id,  nodeValue.instance, nodeValue.index, formattedValue);
+        // node.setValue();
+
+
     }
 
     /**
@@ -56,12 +60,12 @@ class NodeService {
      */
     getNodeUserValues(nodeId) {
 
-        const node = NodeEventService.getNodeById(nodeId);
+        const node: ZWaveNode = nodeEventService.getNodeById(nodeId);
         if (!node) {
             throw new Error('Unable to set node value: node not found');
         }
 
-        return node.getUserValues();
+        // return node.getUserValues();
     }
 
     /**
@@ -69,14 +73,15 @@ class NodeService {
      */
     getNodeConfigValues(nodeId) {
 
-        const node = NodeEventService.getNodeById(nodeId);
+        const node: ZWaveNode = nodeEventService.getNodeById(nodeId);
         if (!node) {
             throw new Error('Unable to set node value: node not found');
         }
 
-        return node.getConfigValues();
+        // return node.getConfigValues();
     }
+
 
 }
 
-module.exports = new NodeService();
+export const nodeService = new NodeService();

@@ -1,8 +1,8 @@
 'use strict';
 
-import DriverEventService from '../../services/Zwave/DriverEventService';
-import DriverService      from '../../services/Zwave/DriverService';
-import NodeService        from '../../services/Zwave/NodeService';
+import {driverEventService} from '../../services/Zwave/DriverEventService';
+import {driverService}      from '../../services/Zwave/DriverService';
+import {nodeService}        from '../../services/Zwave/NodeService';
 
 
 class DriverController {
@@ -15,7 +15,7 @@ class DriverController {
      * @returns {any}
      */
     homeId(req, res) {
-        return res.json({homeId: DriverEventService.getHomeId() });
+        return res.json({homeId: driverEventService.getHomeId() });
     }
 
     /**
@@ -26,7 +26,7 @@ class DriverController {
      * @returns {any}
      */
     startInclusion(req, res) {
-        const response = NodeService.startInclusion();
+        const response = nodeService.startInclusion();
 
         if (response) {
             return res.json({message: 'inclusion started' });
@@ -43,7 +43,7 @@ class DriverController {
      * @returns {any}
      */
     startExclusion(req, res) {
-        const response = NodeService.startExclusion();
+        const response = nodeService.startExclusion();
 
         if (response) {
             return res.json({message: 'exclusion started'});
@@ -62,7 +62,7 @@ class DriverController {
     softReset(req, res) {
 
         try {
-            DriverService.softReset();
+            driverService.softReset();
 
             return res.json({message: 'Soft reset OK'});
 
@@ -81,7 +81,7 @@ class DriverController {
     hardReset(req, res) {
 
         try {
-            DriverService.hardReset();
+            driverService.hardReset();
 
             return res.json({message: 'Hard reset OK'});
 
@@ -91,4 +91,4 @@ class DriverController {
     }
 }
 
-module.exports = new DriverController();
+export const driverController = new DriverController();

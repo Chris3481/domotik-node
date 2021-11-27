@@ -1,7 +1,7 @@
 'use strict';
 
-import NodeEventService from '../../services/Zwave/NodeEventService';
-import NodeService      from '../../services/Zwave/NodeService';
+import {nodeEventService} from '../../services/Zwave/NodeEventService';
+import {nodeService}      from '../../services/Zwave/NodeService';
 
 class NodeController {
 
@@ -15,11 +15,11 @@ class NodeController {
     list(req, res) {
         let response = [];
 
-        let list = NodeEventService.getList();
+        let list = nodeEventService.getList();
 
-        list.forEach((node) => { response.push(node.data); });
+        //list.forEach((node) => { response.push(node.data); });
 
-        return res.json({nodes: response });
+        return res.json({nodes: [] });
     }
 
     /**
@@ -31,7 +31,7 @@ class NodeController {
         const valueId = req.params.valueId;
         const value   = req.params.value;
 
-        NodeService.setNodeValue(valueId, value);
+        nodeService.setNodeValue(valueId, value);
 
         return res.json({message: 'value set'});
     }
@@ -45,7 +45,7 @@ class NodeController {
 
         const nodeId = req.params.nodeId;
 
-        const values = NodeService.getNodeUserValues(nodeId);
+        const values = nodeService.getNodeUserValues(nodeId);
 
         return res.json(values);
     }
@@ -59,10 +59,10 @@ class NodeController {
 
         const nodeId = req.params.nodeId;
 
-        const values = NodeService.getNodeConfigValues(nodeId);
+        const values = nodeService.getNodeConfigValues(nodeId);
 
         return res.json(values);
     }
 }
 
-module.exports = new NodeController();
+export const nodeController = new NodeController();

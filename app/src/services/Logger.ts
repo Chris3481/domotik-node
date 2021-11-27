@@ -1,6 +1,6 @@
 "use strict"
 
-import winston from 'winston';
+import * as winston from 'winston';
 
 
 const logger = winston.createLogger({
@@ -23,4 +23,4 @@ const logger = winston.createLogger({
 });
 
 
-module.exports = logger;
+export {logger as Logger}

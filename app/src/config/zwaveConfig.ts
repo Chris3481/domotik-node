@@ -1,6 +1,6 @@
 "use strict"
 
-module.exports = {
+export const zwaveConfig = {
     driverPath:    '/dev/ttyACM0',
     consoleOutput: true,
 };
